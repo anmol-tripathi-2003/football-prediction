@@ -24,7 +24,7 @@ team_logos = {
 }
 
 # Streamlit app title
-st.markdown("<h1 style='text-align: center;'>⚽ Football Match Winner Predictor</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>⚽ Fantasy Football Match Winner Predictor</h1>", unsafe_allow_html=True)
 st.markdown("---")
 
 # Input: Select Team and Opponent
