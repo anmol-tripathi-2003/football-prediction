@@ -15,14 +15,14 @@ matches['hour'] = matches['time'].str.replace(':.+', '', regex=True).astype('int
 matches['day_code'] = matches['date'].dt.dayofweek
 matches['target'] = (matches['result'] == 'W').astype('int')
 
-# --- TEAM SELECTION ---
+# TEAM SELECTION
 team = st.selectbox("Select Your Team", matches["team"].unique())
 opponent = st.selectbox("Select Opponent", matches["opponent"].unique())
 venue = st.selectbox("Select Match Venue", matches["venue"].unique())
 hour = st.slider("Match Start Time (24-hour format)", 0, 23)
 day = st.selectbox("Match Day", ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
 
-# --- TEAM LOGO DISPLAY ---
+# TEAM LOGO DISPLAY
 team_logos = {
     "Arsenal": "https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg",
     "Aston Villa": "https://upload.wikimedia.org/wikipedia/en/9/9f/Aston_Villa_logo.svg",
@@ -52,7 +52,7 @@ team_logos = {
 if team in team_logos:
     st.image(team_logos[team], width=100)
 
-# --- RECENT FORM ---
+# RECENT FORM 
 st.subheader(f"{team}'s Recent Form (Last 5 Matches)")
 recent = matches[matches["team"] == team].sort_values("date").tail(5)
 form = recent[["date", "result"]].copy()
@@ -60,14 +60,14 @@ form["result_num"] = recent["target"]
 form = form.set_index("date")
 st.line_chart(form["result_num"])
 
-# --- MODEL TRAINING ---
+# MODEL TRAINING 
 predictors = ["venue_code", "opp_code", "hour", "day_code"]
 rf = RandomForestClassifier(n_estimators=50, min_samples_split=10, random_state=1)
 train = matches[matches["date"] < '2022-01-01']
 test = matches[matches["date"] > '2022-01-01']
 rf.fit(train[predictors], train["target"])
 
-# --- MAKE PREDICTION ---
+# MAKE PREDICTION
 input_data = pd.DataFrame({
     "venue_code": [matches[matches["venue"] == venue]["venue_code"].values[0]],
     "opp_code": [matches[matches["opponent"] == opponent]["opp_code"].values[0]],
