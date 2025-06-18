@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import precision_score
-
 # Load data
 matches = pd.read_csv("matches.csv", index_col=0)
 matches['date'] = pd.to_datetime(matches['date'])
